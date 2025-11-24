@@ -1,0 +1,45 @@
+/* Webpage /*
+
+<!DOCTYPE html>
+
+<html lang ='en'>
+<meta charset="UTF-8">    
+    <head>
+        <title>Weather App</title>
+    </head>
+
+    <body>
+        <h1>Weather in Lusaka</h1>
+
+        <input id="cityInput" placeholder="Lusaka"/>
+        <button onclick="getWeather()">What's the weather like</button>
+
+        <p id="result"></p>
+        
+        <script src="script.js"></script>
+    </body>
+</html>
+
+/* API call /*
+
+function getWeather() {
+    const city = document.getElementById("cityInput").value;
+
+    const API_KEY = "f86db83a53285256223b29e00295981a";
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+    const temp = data.main?.temp ?? 'N/A';
+    const description = data.weather?.[0]?.description ?? 'N/A';
+
+    document.getElementById("result").innerText = `Temperature: ${temp}°C \nCondition: ${description}`;
+})
+        .catch(err => {
+            console.log(err);
+
+            document.getElementById("result").innerText = "Error fetching weather data.";
+        })
+}
